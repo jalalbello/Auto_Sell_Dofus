@@ -1,0 +1,1 @@
++ Need ressource to be available in 100 + Quantity
