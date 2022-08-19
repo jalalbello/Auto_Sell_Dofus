@@ -148,7 +148,6 @@ def check_ressource_price_and_sell_it(ressource, sales_number):
         img = cv2.erode(img, kernel, iterations=1)
         cv2.imwrite('mapcheck2.tiff', img)
         img = cv2.imread("mapcheck2.tiff", cv2.IMREAD_UNCHANGED)
-        print('Original Dimensions' )     
         scale_percent = 1000 # percent of original size
         width = int(img.shape[1] * scale_percent / 100)
         height = int(img.shape[0] * scale_percent / 100)
@@ -170,7 +169,8 @@ def check_ressource_price_and_sell_it(ressource, sales_number):
         #! transform price into a str and remove spaces
         price = " ".join(price).replace(" ","")
         Price_History = open("Price_History.txt", "a")
-        Price_History.write(f'{ressource} price is : {str(price)}\n')
+        nl = "\n"
+        Price_History.write(f'{nl}{ressource} price is : {str(price)}')
         final_price= int(price) - 1
 
         #! since gold price is unchangable
@@ -208,3 +208,4 @@ def check_ressource_price_and_sell_it(ressource, sales_number):
 
         time.sleep(7)
         pyautogui.leftClick(1026, 63)
+        
