@@ -113,7 +113,7 @@ def go_to_hdv_with_ressource(ressource):
         time.sleep(7)
 
 def check_ressource_price_and_sell_it(ressource, sales_number):
-    click_sell_and_ressource=[(580, 96)(851, 142)]
+    click_sell_and_ressource=[(580, 96),(851, 142)]
     for i in click_sell_and_ressource:
         pyautogui.leftClick(i)
         time.sleep(7)
@@ -126,12 +126,13 @@ def check_ressource_price_and_sell_it(ressource, sales_number):
         timetuple = now[:6]
         hour_min = (timetuple[3], timetuple[4])
         logs = open("logs.txt", "a")
-        logs.write(f'Failure to locate 100.png at : {str(hour_min)}', "a")
+        logs.write(f'Failure to locate 100.png at : {str(hour_min)}\n', "a")
 
     #*TRANSFORM IMAGE BLOCK
     
     if x100 and y100 is not None: 
         screenshot1 = pyautogui.screenshot("mapcheck1.tiff", region=(x100, y100, 85, 19))
+            
         image = cv2.imread("mapcheck1.tiff", 0)
         inverted_image = cv2.bitwise_not(image)
         cv2.imwrite("mapcheck1.tiff", inverted_image)
@@ -155,6 +156,9 @@ def check_ressource_price_and_sell_it(ressource, sales_number):
         # resize image
         resized = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
         cv2.imwrite("mapcheck2.tiff", resized)
+        thresh = cv2.threshold(cv2.GaussianBlur(resized, (5, 5), 0), 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
+        cv2.imwrite("mapcheck2.tiff", thresh)
+        custom_oem = '--psm 12, -c tessedit_char_whitelist=0123456789'
 
         #*This results in a transformed Image
 
@@ -166,8 +170,8 @@ def check_ressource_price_and_sell_it(ressource, sales_number):
         #! transform price into a str and remove spaces
         price = " ".join(price).replace(" ","")
         Price_History = open("Price_History.txt", "a")
-        Price_History.write(f'{ressource} price is : {price}')
-        final_price= str(int(price - 1))
+        Price_History.write(f'{ressource} price is : {str(price)}\n')
+        final_price= int(price) - 1
 
         #! since gold price is unchangable
         if ressource != 'or':
@@ -178,7 +182,7 @@ def check_ressource_price_and_sell_it(ressource, sales_number):
             time.sleep(3)
             pyautogui.write(str(ressource), interval=0.25)
             pyautogui.leftClick (778, 154)
-            pyautogui.write(final_price, interval=0.25)
+            pyautogui.write(str(final_price), interval=0.25)
             pyautogui.press('enter')
             confirm_price_change = pyautogui.locateOnScreen("img/yes.png", confidence=0.75)
             if confirm_price_change is not None : pyautogui.leftClick(confirm_price_change)
@@ -191,7 +195,7 @@ def check_ressource_price_and_sell_it(ressource, sales_number):
                 pyautogui.leftClick(i)
                 time.sleep(7)
         #!so the bot changes the price if the ressource is not gold, and leaves and selects it again, if ressource is gold then its already selected and its gonna start the sale   
-        pyautogui.write(final_price, interval=0.25)
+        pyautogui.write(str(final_price), interval=0.25)
 
         for i in range (sales_number) :
             sell = pyautogui.locateOnScreen("img/sell.png", confidence=0.99)
@@ -201,3 +205,6 @@ def check_ressource_price_and_sell_it(ressource, sales_number):
         time.sleep(2)
         xno = pyautogui.locateOnScreen("img/xno.png", confidence=0.99)
         if xno is not None: pyautogui.click(xno)
+
+        time.sleep(7)
+        pyautogui.leftClick(1026, 63)

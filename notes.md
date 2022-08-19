@@ -3,3 +3,5 @@
 * next function should be get necessary ressource for the price, takes arg ressource
 
 so the ressource class is the only one to leave the bank
+
+# Bot working sucessfully
